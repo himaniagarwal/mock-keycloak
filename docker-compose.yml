@@ -1,0 +1,40 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:10.2-alpine
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./seed.sql:/docker-entrypoint-initdb.d/seed.sql
+    networks:
+      app_net:
+        ipv4_address: 172.16.239.11
+  keycloak:
+    image: jboss/keycloak
+    ports:
+      - '8180:8080'
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - DB_VENDOR=POSTGRES
+      - DB_ADDR=172.16.239.11
+      - DB_PORT=5432
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_PASSWORD=password
+    restart: always
+    networks:
+      app_net:
+        ipv4_address: 172.16.239.9
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.239.0/24
