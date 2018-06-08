@@ -12,9 +12,9 @@ public class KeycloakController {
     @Autowired
     private KeycloakService keycloakService;
 
-
     @RequestMapping("/keycloak/token")
-    public ResponseEntity<Token> getToken(@RequestHeader("code") String code) {
-        return ResponseEntity.ok(keycloakService.getToken(code));
+    @PostMapping
+    public ResponseEntity<Token> getToken(@RequestParam("code") String code) {
+        return ResponseEntity.ok(keycloakService.addAuthentication(code));
     }
 }

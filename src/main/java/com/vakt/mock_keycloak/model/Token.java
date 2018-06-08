@@ -18,7 +18,13 @@ public class Token {
     }
 
     @JsonCreator
-    public Token(String access_token, long expires_in, long refresh_express_in, String refresh_token, String token_type,@JsonProperty("not-before-policy") String not_before_policy, String session_state) {
+    public Token(@JsonProperty("access_token") String access_token,
+                 @JsonProperty("expires_in") long expires_in,
+                 @JsonProperty("refresh_express_in") long refresh_express_in,
+                 @JsonProperty("refresh_token") String refresh_token,
+                 @JsonProperty("token_type") String token_type,
+                 @JsonProperty("not-before-policy") String not_before_policy,
+                 @JsonProperty("session_date") String session_state) {
         this.access_token = access_token;
         this.expires_in = expires_in;
         this.refresh_express_in = refresh_express_in;
