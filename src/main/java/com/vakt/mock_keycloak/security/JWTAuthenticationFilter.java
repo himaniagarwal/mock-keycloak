@@ -4,6 +4,7 @@ import com.vakt.mock_keycloak.services.KeycloakService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -13,11 +14,15 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+@Component
 public class JWTAuthenticationFilter extends GenericFilterBean {
+
+    @Autowired
+    KeycloakService keycloakService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        Authentication authentication = new KeycloakService().getAuthentication((HttpServletRequest)request);
+        Authentication authentication =keycloakService.getAuthentication((HttpServletRequest)request);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request,response);
     }
